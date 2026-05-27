@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "DeepSeek 划词AI助手",
-  "version": "1.0.0",
-  "description": "在网页上划词划句，使用DeepSeek AI进行智能分析，支持自定义提示词",
+  "name": "划词AI助手",
+  "version": "1.1.0",
+  "description": "在网页上划词划句，使用AI进行智能分析，支持DeepSeek和阿里云百炼，可自定义提示词",
   "permissions": [
     "storage",
     "activeTab"

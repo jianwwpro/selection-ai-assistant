@@ -1,4 +1,4 @@
-// popup.js - 设置页面逻辑
+// popup.js - 设置页面逻辑（支持多AI提供商）
 
 const DEFAULT_PROMPTS = [
   { name: '翻译', text: '请将以下内容翻译成中文，保持原文的语气和风格：\n{{text}}', enabled: true },
@@ -7,33 +7,61 @@ const DEFAULT_PROMPTS = [
   { name: '润色', text: '请帮我润色以下文本，使其更加流畅和优雅：\n{{text}}', enabled: false },
 ];
 
-// 当前编辑中的prompts状态
 let currentPrompts = null;
 let currentActiveIndex = 0;
+let currentProvider = 'deepseek';
 
 // 加载设置
 function loadSettings() {
   chrome.storage.sync.get({
-    apiKey: '',
-    model: 'deepseek-chat',
+    provider: 'deepseek',
+    deepseekApiKey: '',
+    deepseekModel: 'deepseek-chat',
+    aliyunApiKey: '',
+    aliyunModel: 'qwen-plus',
     prompts: DEFAULT_PROMPTS,
     activePromptIndex: 0,
     triggerMode: 'float'
   }, (items) => {
     currentPrompts = items.prompts;
     currentActiveIndex = items.activePromptIndex;
-    document.getElementById('apiKey').value = items.apiKey;
-    document.getElementById('model').value = items.model;
+    currentProvider = items.provider;
+
+    document.getElementById('deepseekApiKey').value = items.deepseekApiKey;
+    document.getElementById('deepseekModel').value = items.deepseekModel;
+    document.getElementById('aliyunApiKey').value = items.aliyunApiKey;
+    document.getElementById('aliyunModel').value = items.aliyunModel;
     document.getElementById('triggerMode').value = items.triggerMode;
+
+    switchProvider(currentProvider);
     renderPromptList();
   });
 }
+
+// 提供商切换
+function switchProvider(provider) {
+  currentProvider = provider;
+  // 更新tab样式
+  document.querySelectorAll('.provider-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.provider === provider);
+  });
+  // 显示/隐藏对应配置
+  document.getElementById('deepseekConfig').style.display = provider === 'deepseek' ? 'block' : 'none';
+  document.getElementById('aliyunConfig').style.display = provider === 'aliyun' ? 'block' : 'none';
+}
+
+// 绑定提供商tab事件
+document.querySelectorAll('.provider-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    switchProvider(tab.dataset.provider);
+  });
+});
 
 // 渲染提示词列表
 function renderPromptList() {
   const listEl = document.getElementById('promptList');
   listEl.innerHTML = '';
-  
+
   currentPrompts.forEach((prompt, index) => {
     const item = document.createElement('div');
     item.className = 'prompt-item';
@@ -51,32 +79,23 @@ function renderPromptList() {
     listEl.appendChild(item);
   });
 
-  // 绑定radio事件
   listEl.querySelectorAll('input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       currentActiveIndex = parseInt(e.target.value);
     });
   });
 
-  // 绑定编辑按钮
   listEl.querySelectorAll('.edit-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.index);
-      editPrompt(idx);
-    });
+    btn.addEventListener('click', () => editPrompt(parseInt(btn.dataset.index)));
   });
 
-  // 绑定删除按钮
   listEl.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.index);
-      currentPrompts.splice(idx, 1);
+      currentPrompts.splice(parseInt(btn.dataset.index), 1);
       if (currentPrompts.length === 0) {
         currentPrompts.push({ name: '默认', text: '{{text}}', enabled: true });
       }
-      if (currentActiveIndex >= currentPrompts.length) {
-        currentActiveIndex = 0;
-      }
+      if (currentActiveIndex >= currentPrompts.length) currentActiveIndex = 0;
       renderPromptList();
     });
   });
@@ -85,9 +104,7 @@ function renderPromptList() {
 // 编辑提示词
 function editPrompt(index) {
   const prompt = currentPrompts[index];
-  const listEl = document.getElementById('promptList');
-  const item = listEl.children[index];
-  
+  const item = document.getElementById('promptList').children[index];
   item.innerHTML = `
     <div style="width:100%;">
       <input type="text" id="editName" value="${prompt.name}" placeholder="提示词名称" style="margin-bottom:6px; font-size:12px;">
@@ -99,16 +116,12 @@ function editPrompt(index) {
       </div>
     </div>
   `;
-
   document.getElementById('saveEditBtn').addEventListener('click', () => {
     prompt.name = document.getElementById('editName').value || '未命名';
     prompt.text = document.getElementById('editText').value || '{{text}}';
     renderPromptList();
   });
-
-  document.getElementById('cancelEditBtn').addEventListener('click', () => {
-    renderPromptList();
-  });
+  document.getElementById('cancelEditBtn').addEventListener('click', () => renderPromptList());
 }
 
 // 添加新提示词
@@ -116,47 +129,49 @@ document.getElementById('addPromptBtn').addEventListener('click', () => {
   currentPrompts.push({ name: '新提示词', text: '请分析以下内容：\n{{text}}', enabled: true });
   currentActiveIndex = currentPrompts.length - 1;
   renderPromptList();
-  // 自动进入编辑模式
   editPrompt(currentPrompts.length - 1);
 });
 
 // 保存设置
 document.getElementById('saveBtn').addEventListener('click', () => {
-  const apiKey = document.getElementById('apiKey').value.trim();
-  const model = document.getElementById('model').value;
+  const deepseekApiKey = document.getElementById('deepseekApiKey').value.trim();
+  const deepseekModel = document.getElementById('deepseekModel').value;
+  const aliyunApiKey = document.getElementById('aliyunApiKey').value.trim();
+  const aliyunModel = document.getElementById('aliyunModel').value;
   const triggerMode = document.getElementById('triggerMode').value;
 
-  if (!apiKey) {
-    showStatus('请输入API Key', 'error');
+  // 检查当前提供商的API Key
+  if (currentProvider === 'deepseek' && !deepseekApiKey) {
+    showStatus('请输入 DeepSeek API Key', 'error');
+    return;
+  }
+  if (currentProvider === 'aliyun' && !aliyunApiKey) {
+    showStatus('请输入阿里云百炼 API Key', 'error');
     return;
   }
 
   chrome.storage.sync.set({
-    apiKey: apiKey,
-    model: model,
+    provider: currentProvider,
+    deepseekApiKey: deepseekApiKey,
+    deepseekModel: deepseekModel,
+    aliyunApiKey: aliyunApiKey,
+    aliyunModel: aliyunModel,
     prompts: currentPrompts,
     activePromptIndex: currentActiveIndex,
     triggerMode: triggerMode
   }, () => {
     showStatus('设置已保存！✅', 'success');
-    // 通知content script更新配置
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0]) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: 'CONFIG_UPDATED' });
-      }
+      if (tabs[0]) chrome.tabs.sendMessage(tabs[0].id, { type: 'CONFIG_UPDATED' });
     });
   });
 });
 
-// 显示状态消息
 function showStatus(msg, type) {
   const statusEl = document.getElementById('statusMsg');
   statusEl.textContent = msg;
   statusEl.className = 'status ' + type;
-  setTimeout(() => {
-    statusEl.className = 'status';
-  }, 3000);
+  setTimeout(() => { statusEl.className = 'status'; }, 3000);
 }
 
-// 初始化
 loadSettings();

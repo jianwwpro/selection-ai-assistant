@@ -73,6 +73,15 @@
   font-size: 14px;
 }
 
+.dsai-provider-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  color: white;
+  white-space: nowrap;
+}
+
 .dsai-prompt-selector {
   padding: 4px 8px;
   border: 1px solid rgba(255, 255, 255, 0.3);
