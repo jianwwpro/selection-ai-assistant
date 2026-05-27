@@ -10,6 +10,12 @@
 
 **DeepSeek 划词AI助手** 是一个 Chrome 浏览器扩展插件，让你在网页上划词划句时，一键调用 DeepSeek AI 进行智能分析。支持自定义提示词，灵活配置 API Key，划词即问，AI秒答！
 
+### 截图展示
+
+| 划词浮动按钮 | AI分析结果 | 设置页面 |
+|:---:|:---:|:---:|
+| ![划词浮动按钮](imgs/1.png) | ![AI分析结果](imgs/2.png) | ![设置页面](imgs/3.png) |
+
 ### 功能特性
 
 - 🖱️ **划词触发** — 选中文本后自动在选区上方出现浮动按钮
@@ -90,6 +96,12 @@ deepseek-selection-ai/
 
 **DeepSeek Selection AI Assistant** is a Chrome extension that lets you instantly analyze selected text on any webpage using DeepSeek AI. With customizable prompts and configurable API Key, simply select text and get AI-powered insights in seconds!
 
+### Screenshots
+
+| Floating Button | AI Analysis Result | Settings Page |
+|:---:|:---:|:---:|
+| ![Floating Button](imgs/1.png) | ![AI Analysis Result](imgs/2.png) | ![Settings Page](imgs/3.png) |
+
 ### Features
 
 - 🖱️ **Selection Trigger** — A floating button appears above the selected text automatically
@@ -169,6 +181,12 @@ deepseek-selection-ai/
 ### 概要
 
 **DeepSeek 選択テキストAIアシスタント** は、ウェブページ上でテキストを選択（ドラッグ）すると、DeepSeek AI を即座に呼び出して智能分析を行う Chrome拡張機能です。カスタムプロンプトとAPIキーの設定が可能で、テキストを選択すればAIが瞬時に回答！
+
+### スクリーンショット
+
+| フローティングボタン | AI分析結果 | 設定ページ |
+|:---:|:---:|:---:|
+| ![フローティングボタン](imgs/1.png) | ![AI分析結果](imgs/2.png) | ![設定ページ](imgs/3.png) |
 
 ### 特徴
 
