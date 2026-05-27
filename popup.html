@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>DeepSeek 划词AI助手 - 设置</title>
+  <title>划词AI助手 - 设置</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -133,25 +133,65 @@
     .status.error { background: #f8d7da; color: #721c24; display: block; }
     .footer { text-align: center; padding: 12px; font-size: 11px; color: #aaa; }
     .model-select { margin-top: 8px; }
+    .provider-tabs {
+      display: flex; gap: 0; margin-bottom: 12px; border-radius: 6px; overflow: hidden;
+      border: 1px solid #ddd;
+    }
+    .provider-tab {
+      flex: 1; padding: 8px 12px; text-align: center; font-size: 12px; font-weight: 500;
+      cursor: pointer; background: #fafafa; color: #555; transition: all 0.2s;
+      border: none; outline: none;
+    }
+    .provider-tab.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
+    }
+    .provider-tab:hover:not(.active) { background: #eee; }
+    .provider-config { margin-top: 8px; }
+    .provider-config .field { margin-top: 8px; }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>🤖 DeepSeek 划词AI助手</h1>
-    <p>划词即问，AI秒答</p>
+    <h1>🤖 划词AI助手</h1>
+    <p>划词即问，AI秒答 | 支持 DeepSeek & 阿里云百炼</p>
   </div>
   <div class="container">
     <div class="section">
-      <div class="section-title"><span>🔑</span> API 配置</div>
-      <label for="apiKey">DeepSeek API Key</label>
-      <input type="password" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx">
-      <div class="hint">从 platform.deepseek.com 获取您的API Key</div>
-      <div class="model-select">
-        <label for="model">模型选择</label>
-        <select id="model">
-          <option value="deepseek-chat">DeepSeek Chat (通用对话)</option>
-          <option value="deepseek-reasoner">DeepSeek Reasoner (深度推理)</option>
-        </select>
+      <div class="section-title"><span>🌐</span> AI 提供商</div>
+      <div class="provider-tabs">
+        <button class="provider-tab active" data-provider="deepseek">DeepSeek</button>
+        <button class="provider-tab" data-provider="aliyun">阿里云百炼</button>
+      </div>
+      <div id="deepseekConfig" class="provider-config">
+        <div class="field">
+          <label for="deepseekApiKey">DeepSeek API Key</label>
+          <input type="password" id="deepseekApiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx">
+          <div class="hint">从 platform.deepseek.com 获取</div>
+        </div>
+        <div class="field">
+          <label for="deepseekModel">模型选择</label>
+          <select id="deepseekModel">
+            <option value="deepseek-chat">DeepSeek Chat (通用对话)</option>
+            <option value="deepseek-reasoner">DeepSeek Reasoner (深度推理)</option>
+          </select>
+        </div>
+      </div>
+      <div id="aliyunConfig" class="provider-config" style="display:none;">
+        <div class="field">
+          <label for="aliyunApiKey">阿里云百炼 API Key</label>
+          <input type="password" id="aliyunApiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx">
+          <div class="hint">从 bailian.console.aliyun.com 获取</div>
+        </div>
+        <div class="field">
+          <label for="aliyunModel">模型选择</label>
+          <select id="aliyunModel">
+            <option value="deepseek-v3">DeepSeek V3 (深度推理)</option>
+            <option value="qwen-turbo">Qwen Turbo (快速响应)</option>
+            <option value="qwen-plus">Qwen Plus (能力均衡)</option>
+            <option value="qwen-max">Qwen Max (最强能力)</option>
+            <option value="qwen-long">Qwen Long (长文本)</option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="section">
@@ -173,7 +213,7 @@
     <button class="btn btn-primary" id="saveBtn" style="width:100%; margin-top:4px;">💾 保存设置</button>
     <div class="status" id="statusMsg"></div>
   </div>
-  <div class="footer">DeepSeek 划词AI助手 v1.0</div>
+  <div class="footer">划词AI助手 v1.1 | 支持 DeepSeek & 阿里云百炼</div>
   <script src="popup.js"></script>
 </body>
 </html>

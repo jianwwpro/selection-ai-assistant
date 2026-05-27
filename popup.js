@@ -18,7 +18,7 @@ function loadSettings() {
     deepseekApiKey: '',
     deepseekModel: 'deepseek-chat',
     aliyunApiKey: '',
-    aliyunModel: 'qwen-plus',
+    aliyunModel: 'deepseek-v3',
     prompts: DEFAULT_PROMPTS,
     activePromptIndex: 0,
     triggerMode: 'float'

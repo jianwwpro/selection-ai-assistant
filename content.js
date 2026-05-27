@@ -11,7 +11,7 @@
     deepseekApiKey: '',
     deepseekModel: 'deepseek-chat',
     aliyunApiKey: '',
-    aliyunModel: 'qwen-plus',
+    aliyunModel: 'deepseek-v3',
     prompts: [],
     activePromptIndex: 0,
     triggerMode: 'float'
@@ -33,7 +33,7 @@
       deepseekApiKey: '',
       deepseekModel: 'deepseek-chat',
       aliyunApiKey: '',
-      aliyunModel: 'qwen-plus',
+      aliyunModel: 'deepseek-v3',
       prompts: [
         { name: '翻译', text: '请将以下内容翻译成中文，保持原文的语气和风格：\n{{text}}', enabled: true },
         { name: '解释', text: '请详细解释以下内容的含义：\n{{text}}', enabled: true },

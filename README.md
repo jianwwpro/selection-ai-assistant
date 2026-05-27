@@ -34,6 +34,7 @@
 |--------|------|------|
 | **DeepSeek** | deepseek-chat | 通用对话模型 |
 | **DeepSeek** | deepseek-reasoner | 深度推理模型 |
+| **阿里云百炼** | deepseek-v3 | DeepSeek V3 深度推理（通过百炼调用） |
 | **阿里云百炼** | qwen-turbo | 快速响应，适合简单任务 |
 | **阿里云百炼** | qwen-plus | 能力均衡，性价比高 |
 | **阿里云百炼** | qwen-max | 最强能力，适合复杂任务 |
@@ -142,6 +143,7 @@ deepseek-selection-ai/
 |----------|-------|-------------|
 | **DeepSeek** | deepseek-chat | General conversation model |
 | **DeepSeek** | deepseek-reasoner | Deep reasoning model |
+| **Alibaba Cloud Bailian** | deepseek-v3 | DeepSeek V3 deep reasoning (via Bailian) |
 | **Alibaba Cloud Bailian** | qwen-turbo | Fast response, suitable for simple tasks |
 | **Alibaba Cloud Bailian** | qwen-plus | Balanced capabilities, cost-effective |
 | **Alibaba Cloud Bailian** | qwen-max | Most powerful, suitable for complex tasks |
@@ -250,6 +252,7 @@ deepseek-selection-ai/
 |-------------|--------|------|
 | **DeepSeek** | deepseek-chat | 一般会話モデル |
 | **DeepSeek** | deepseek-reasoner | 深い推論モデル |
+| **Alibaba Cloud 百炼** | deepseek-v3 | DeepSeek V3 深い推論（百炼経由） |
 | **Alibaba Cloud 百炼** | qwen-turbo | 高速応答、簡単なタスク向け |
 | **Alibaba Cloud 百炼** | qwen-plus | 能力バランス、コスパ良 |
 | **Alibaba Cloud 百炼** | qwen-max | 最強能力、複雑なタスク向け |
