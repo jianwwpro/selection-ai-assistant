@@ -1,0 +1,10 @@
+# OS files
+.DS_Store
+
+# IDE
+.hbuilderx/
+.vscode/
+
+# Temp files
+*.tmp
+generate_icons.js
