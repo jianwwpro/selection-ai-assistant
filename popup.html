@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>DeepSeek 划词AI助手 - 设置</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 380px;
+      min-height: 500px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 16px 20px;
+      color: white;
+    }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .header p { font-size: 12px; margin-top: 4px; opacity: 0.9; }
+    .container { padding: 16px 20px; }
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+      display: block;
+      margin-bottom: 6px;
+    }
+    input[type="text"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      transition: border-color 0.2s;
+      background: #fafafa;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      font-family: monospace;
+      line-height: 1.5;
+    }
+    .hint { font-size: 11px; color: #999; margin-top: 4px; }
+    .prompt-list { margin-top: 12px; }
+    .prompt-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .prompt-item:last-child { border-bottom: none; }
+    .prompt-item input[type="radio"] { accent-color: #667eea; }
+    .prompt-item .prompt-text {
+      font-size: 12px;
+      color: #555;
+      flex: 1;
+    }
+    .prompt-actions { display: flex; gap: 4px; }
+    .btn {
+      padding: 6px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-danger {
+      background: #ff4757;
+      color: white;
+      font-size: 11px;
+      padding: 4px 8px;
+    }
+    .btn-danger:hover { background: #ff6b81; }
+    .btn-secondary {
+      background: #eee;
+      color: #555;
+      font-size: 11px;
+      padding: 4px 8px;
+    }
+    .btn-secondary:hover { background: #ddd; }
+    .add-prompt-btn {
+      margin-top: 8px;
+      width: 100%;
+      padding: 8px;
+      background: #f0f2ff;
+      color: #667eea;
+      border: 1px dashed #667eea;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .add-prompt-btn:hover { background: #e0e4ff; }
+    .status {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-top: 12px;
+      display: none;
+    }
+    .status.success { background: #d4edda; color: #155724; display: block; }
+    .status.error { background: #f8d7da; color: #721c24; display: block; }
+    .footer { text-align: center; padding: 12px; font-size: 11px; color: #aaa; }
+    .model-select { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🤖 DeepSeek 划词AI助手</h1>
+    <p>划词即问，AI秒答</p>
+  </div>
+  <div class="container">
+    <div class="section">
+      <div class="section-title"><span>🔑</span> API 配置</div>
+      <label for="apiKey">DeepSeek API Key</label>
+      <input type="password" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx">
+      <div class="hint">从 platform.deepseek.com 获取您的API Key</div>
+      <div class="model-select">
+        <label for="model">模型选择</label>
+        <select id="model">
+          <option value="deepseek-chat">DeepSeek Chat (通用对话)</option>
+          <option value="deepseek-reasoner">DeepSeek Reasoner (深度推理)</option>
+        </select>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span>💬</span> 提示词配置</div>
+      <div class="hint">使用 {{text}} 代表划选的文本内容</div>
+      <div id="promptList" class="prompt-list"></div>
+      <button class="add-prompt-btn" id="addPromptBtn">+ 添加提示词</button>
+    </div>
+    <div class="section">
+      <div class="section-title"><span>⚡</span> 触发方式</div>
+      <label for="triggerMode">触发方式</label>
+      <select id="triggerMode">
+        <option value="float">划词后显示浮动按钮</option>
+        <option value="shortcut">快捷键触发 (Alt+S)</option>
+        <option value="both">两者都支持</option>
+      </select>
+      <div class="hint">选择如何触发AI分析</div>
+    </div>
+    <button class="btn btn-primary" id="saveBtn" style="width:100%; margin-top:4px;">💾 保存设置</button>
+    <div class="status" id="statusMsg"></div>
+  </div>
+  <div class="footer">DeepSeek 划词AI助手 v1.0</div>
+  <script src="popup.js"></script>
+</body>
+</html>
